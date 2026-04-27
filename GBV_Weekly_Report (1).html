@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GBV Weekly Client Report</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700;800&family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --teal-dark:   #1A5E6C;
+    --teal-mid:    #2980A0;
+    --teal-light:  #A8CDD9;
+    --teal-bg:     #D6EBF2;
+    --brown:       #8B7B72;
+    --white:       #FFFFFF;
+    --navy:        #152B33;
+    --surface:     #F4F8FA;
+    --border:      #D0E3EB;
+    --text:        #1A2E35;
+    --muted:       #6A8F9A;
+    --accent:      #E8F5F9;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #EEF5F8;
+    color: var(--text);
+    font-family: 'Barlow', sans-serif;
+    font-size: 14px;
+  }
+
+  /* ── HEADER IMAGE ── */
+  .header-image {
+    position: relative;
+    height: 180px;
+    background: linear-gradient(115deg, #90BFCF 0%, #AECFDB 25%, #C8E0E9 45%, #DCEEf4 62%, #EDF6FA 78%, #F8FCFE 90%, #FFFFFF 100%);
+    overflow: hidden;
+  }
+
+  .planes {
+    position: absolute;
+    left: 0; top: 0;
+    height: 100%;
+    width: 58%;
+    pointer-events: none;
+  }
+
+  .logo-block {
+    position: absolute;
+    right: 56px;
+    top: 50%;
+    transform: translateY(-50%);
+    text-align: right;
+    line-height: 1;
+  }
+  .logo-grow {
+    font-family: 'Barlow', sans-serif;
+    font-weight: 800;
+    font-size: 70px;
+    line-height: 0.95;
+    color: var(--teal-dark);
+    letter-spacing: -2px;
+  }
+  .logo-ventures {
+    font-family: 'Barlow', sans-serif;
+    font-weight: 700;
+    font-size: 20px;
+    letter-spacing: 9px;
+    color: var(--navy);
+    padding-right: 2px;
+  }
+
+  /* ── TEAL STRIP ── */
+  .header-strip {
+    background: var(--teal-dark);
+    height: 52px;
+    padding: 0 40px;
+    display: flex;
+    align-items: center;
+    gap: 28px;
+  }
+  .strip-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 18px;
+    letter-spacing: 3px;
+    color: var(--white);
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .strip-spacer { flex: 1; }
+  .strip-field {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .strip-field span {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 2px;
+    color: rgba(255,255,255,0.65);
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .strip-input {
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 5px;
+    padding: 5px 12px;
+    color: var(--white);
+    font-family: 'Barlow', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    outline: none;
+    transition: background 0.2s, border-color 0.2s;
+    width: 200px;
+  }
+  .strip-input:focus {
+    background: rgba(255,255,255,0.2);
+    border-color: rgba(255,255,255,0.6);
+  }
+  .strip-input.narrow { width: 70px; text-align: center; }
+
+  /* ── META BAR ── */
+  .meta-bar {
+    background: var(--white);
+    border-bottom: 2px solid var(--border);
+    padding: 14px 40px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  .meta-field label {
+    display: block;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    color: var(--teal-dark);
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .meta-field input {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 7px 12px;
+    color: var(--text);
+    font-family: 'Barlow', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .meta-field input:focus {
+    border-color: var(--teal-mid);
+    box-shadow: 0 0 0 3px rgba(41,128,160,0.12);
+  }
+
+  /* ── MAIN ── */
+  .main { padding: 28px 40px 36px; display: flex; flex-direction: column; gap: 20px; }
+
+  /* ── CARD ── */
+  .card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(26,94,108,0.07);
+  }
+  .card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 13px 22px;
+    background: var(--teal-dark);
+  }
+  .card-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    letter-spacing: 2.5px;
+    color: var(--white);
+    text-transform: uppercase;
+  }
+  .card-icon { font-size: 17px; }
+  .toggle-btn {
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.3);
+    color: rgba(255,255,255,0.9);
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-family: 'Barlow', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .toggle-btn:hover { background: rgba(255,255,255,0.28); }
+
+  .card-body { padding: 22px; }
+
+  /* ── STATS ── */
+  .stats-row {
+    display: grid;
+    gap: 14px;
+    margin-bottom: 18px;
+  }
+  .stats-3 { grid-template-columns: repeat(3, 1fr); }
+  .stats-4 { grid-template-columns: repeat(4, 1fr); }
+
+  .stat-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 18px;
+    transition: border-color 0.2s;
+  }
+  .stat-box:focus-within {
+    border-color: var(--teal-mid);
+    box-shadow: 0 0 0 3px rgba(41,128,160,0.1);
+  }
+  .stat-box label {
+    display: block;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    color: var(--muted);
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .stat-box input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--teal-dark);
+    font-family: 'Barlow', sans-serif;
+    font-weight: 700;
+    font-size: 30px;
+    line-height: 1;
+  }
+  .stat-box input::placeholder { color: #C5D8DF; }
+  .stat-box .unit {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 4px;
+    font-weight: 500;
+  }
+  .stat-box.highlight {
+    border-color: rgba(26,94,108,0.28);
+    background: linear-gradient(135deg, #E4F2F6 0%, #F0F8FA 100%);
+  }
+  .stat-box.highlight label { color: var(--teal-dark); }
+
+  /* ── NOTES ── */
+  .notes-label {
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    color: var(--muted);
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  textarea {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 14px;
+    color: var(--text);
+    font-family: 'Barlow', sans-serif;
+    font-size: 13px;
+    line-height: 1.6;
+    resize: vertical;
+    min-height: 70px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  textarea:focus {
+    border-color: var(--teal-mid);
+    box-shadow: 0 0 0 3px rgba(41,128,160,0.1);
+  }
+  textarea::placeholder { color: #C0D5DC; }
+
+  /* ── LEAD TABLE ── */
+  .table-wrap { overflow-x: auto; margin-bottom: 14px; }
+  table { width: 100%; border-collapse: collapse; }
+  thead th {
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    color: var(--teal-dark);
+    text-transform: uppercase;
+    font-weight: 700;
+    padding: 9px 14px;
+    text-align: left;
+    border-bottom: 2px solid var(--border);
+    background: var(--accent);
+    white-space: nowrap;
+  }
+  tbody tr { border-bottom: 1px solid var(--border); transition: background 0.15s; }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: #F0F8FA; }
+  tbody td { padding: 7px 14px; }
+  tbody td input, tbody td select {
+    width: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--text);
+    font-family: 'Barlow', sans-serif;
+    font-size: 13px;
+    padding: 3px 0;
+  }
+  tbody td select { cursor: pointer; -webkit-appearance: none; }
+  select option { background: white; }
+
+  .icp-select {
+    width: 68px !important;
+    border-radius: 20px !important;
+    padding: 3px 10px !important;
+    font-size: 12px !important;
+    font-weight: 700;
+    text-align: center;
+    border: 1px solid var(--border) !important;
+  }
+
+  .add-row-btn {
+    background: transparent;
+    border: 1px dashed var(--border);
+    color: var(--muted);
+    border-radius: 8px;
+    padding: 7px 16px;
+    font-family: 'Barlow', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .add-row-btn:hover { border-color: var(--teal-mid); color: var(--teal-dark); }
+
+  .delete-btn {
+    background: transparent;
+    border: none;
+    color: #C0CED4;
+    cursor: pointer;
+    font-size: 18px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    transition: color 0.2s;
+    line-height: 1;
+  }
+  .delete-btn:hover { color: #BB3322; }
+
+  /* ── PRIORITIES ── */
+  .priority-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .priority-item label {
+    display: block;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    color: var(--muted);
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  /* ── PRINT BAR ── */
+  .print-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 40px 32px;
+  }
+  .print-btn {
+    background: var(--teal-dark);
+    color: var(--white);
+    border: none;
+    border-radius: 8px;
+    padding: 11px 28px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 17px;
+    letter-spacing: 2px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s;
+    box-shadow: 0 4px 14px rgba(26,94,108,0.28);
+  }
+  .print-btn:hover {
+    background: var(--teal-mid);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(26,94,108,0.32);
+  }
+  .clear-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    border-radius: 8px;
+    padding: 11px 20px;
+    font-family: 'Barlow', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .clear-btn:hover { border-color: #BB3322; color: #BB3322; }
+
+  /* ── FOOTER ── */
+  .footer {
+    background: var(--teal-dark);
+    padding: 16px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .footer-left { font-size: 13px; color: rgba(255,255,255,0.8); font-weight: 500; }
+  .footer-right {
+    font-size: 11px;
+    color: rgba(255,255,255,0.45);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+
+  /* ── COLLAPSIBLE ── */
+  .collapsible.hidden { display: none; }
+
+  /* ── PRINT ── */
+  @media print {
+    body { background: white; }
+    .print-bar { display: none !important; }
+    .toggle-btn, .add-row-btn, .delete-btn { display: none !important; }
+    .card { box-shadow: none; break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER IMAGE -->
+<div class="header-image">
+  <svg class="planes" viewBox="0 0 580 180" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMinYMid meet">
+    <!-- Large front-left blue plane -->
+    <polygon points="10,160 295,82 185,172" fill="#6AAEC4" opacity="0.88"/>
+    <polygon points="10,160 295,82 95,150" fill="#8BBFD0" opacity="0.75"/>
+    <!-- Mid blue plane behind -->
+    <polygon points="65,22 340,98 215,18" fill="#4E9AB5" opacity="0.72"/>
+    <polygon points="65,22 340,98 215,60" fill="#70B2C5" opacity="0.58"/>
+    <!-- Brown/taupe accent plane right -->
+    <polygon points="218,178 405,55 375,172" fill="#9E8E84" opacity="0.84"/>
+    <polygon points="218,178 405,55 315,162" fill="#B5A49A" opacity="0.60"/>
+  </svg>
+
+  <div class="logo-block">
+    <div class="logo-grow">GROW BIG</div>
+    <div class="logo-ventures">VENTURES</div>
+  </div>
+</div>
+
+<!-- TEAL STRIP -->
+<div class="header-strip">
+  <div class="strip-label">Weekly Client Report</div>
+  <div class="strip-spacer"></div>
+  <div class="strip-field">
+    <span>Week of</span>
+    <input class="strip-input" type="text" placeholder="Apr 28 – May 2, 2025">
+  </div>
+  <div class="strip-field">
+    <span>Report #</span>
+    <input class="strip-input narrow" type="text" placeholder="001" maxlength="6">
+  </div>
+</div>
+
+<!-- META BAR -->
+<div class="meta-bar">
+  <div class="meta-field">
+    <label>Client Name</label>
+    <input type="text" placeholder="Acme Corp">
+  </div>
+  <div class="meta-field">
+    <label>Account Manager</label>
+    <input type="text" placeholder="Your name">
+  </div>
+  <div class="meta-field">
+    <label>Campaign Name</label>
+    <input type="text" placeholder="Q2 Outbound Push">
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- EMAIL -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title"><span class="card-icon">✉️</span> Email Outreach</div>
+    </div>
+    <div class="card-body">
+      <div class="stats-row stats-3">
+        <div class="stat-box">
+          <label>Emails Sent</label>
+          <input type="number" placeholder="0" min="0">
+          <div class="unit">total sent this week</div>
+        </div>
+        <div class="stat-box">
+          <label>Responses</label>
+          <input type="number" placeholder="0" min="0">
+          <div class="unit">replies received</div>
+        </div>
+        <div class="stat-box highlight">
+          <label>Interested Leads</label>
+          <input type="number" placeholder="0" min="0">
+          <div class="unit">positive interest</div>
+        </div>
+      </div>
+      <div class="notes-label">Campaign Notes</div>
+      <textarea placeholder="Key observations, what's working, any issues to flag…" rows="3"></textarea>
+    </div>
+  </div>
+
+  <!-- LINKEDIN -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title"><span class="card-icon">💼</span> LinkedIn Outreach</div>
+      <button class="toggle-btn" onclick="toggleSection('linkedinBody', this)">HIDE</button>
+    </div>
+    <div class="card-body collapsible" id="linkedinBody">
+      <div class="stats-row stats-4">
+        <div class="stat-box">
+          <label>InMails Sent</label>
+          <input type="number" placeholder="0" min="0">
+          <div class="unit">direct messages sent</div>
+        </div>
+        <div class="stat-box">
+          <label>Connections Sent</label>
+          <input type="number" placeholder="0" min="0">
+          <div class="unit">connection requests</div>
+        </div>
+        <div class="stat-box">
+          <label>Responses</label>
+          <input type="number" placeholder="0" min="0">
+          <div class="unit">replies received</div>
+        </div>
+        <div class="stat-box highlight">
+          <label>Interested Leads</label>
+          <input type="number" placeholder="0" min="0">
+          <div class="unit">positive interest</div>
+        </div>
+      </div>
+      <div class="notes-label">LinkedIn Notes</div>
+      <textarea placeholder="Profile performance, messaging notes, quality observations…" rows="3"></textarea>
+    </div>
+  </div>
+
+  <!-- LEAD NURTURING -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title"><span class="card-icon">🌱</span> Lead Nurturing Log</div>
+      <button class="toggle-btn" onclick="toggleSection('leadsBody', this)">HIDE</button>
+    </div>
+    <div class="card-body collapsible" id="leadsBody">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Lead Name</th>
+              <th>Company</th>
+              <th>ICP Fit</th>
+              <th>Stage</th>
+              <th>Outcome / Notes</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="leadsTable">
+            <tr>
+              <td><input type="text" placeholder="Jane Smith"></td>
+              <td><input type="text" placeholder="Acme Corp"></td>
+              <td><select class="icp-select" onchange="styleIcp(this)">
+                <option value="">—</option>
+                <option value="A">A</option>
+                <option value="B">B</option>
+                <option value="C">C</option>
+              </select></td>
+              <td><select style="min-width:140px">
+                <option>Contacted</option>
+                <option>Replied</option>
+                <option>Meeting Booked</option>
+                <option>In Conversation</option>
+                <option>Proposal Sent</option>
+                <option>Closed Won</option>
+                <option>Not Interested</option>
+                <option>No Response</option>
+              </select></td>
+              <td><input type="text" placeholder="Brief outcome or next step…"></td>
+              <td><button class="delete-btn" onclick="deleteRow(this)">×</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <button class="add-row-btn" onclick="addLeadRow()"><span>+</span> Add Lead</button>
+    </div>
+  </div>
+
+  <!-- PRIORITIES -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title"><span class="card-icon">🎯</span> Priorities — Next Week</div>
+    </div>
+    <div class="card-body">
+      <div class="priority-grid">
+        <div class="priority-item">
+          <label>Action Items</label>
+          <textarea placeholder="Key tasks and owners for next week…" rows="4"></textarea>
+        </div>
+        <div class="priority-item">
+          <label>Blockers / Needs from Client</label>
+          <textarea placeholder="Anything needed from client side? Blockers to flag?…" rows="4"></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- PRINT BAR -->
+<div class="print-bar">
+  <button class="print-btn" onclick="window.print()">↓ Save as PDF</button>
+  <button class="clear-btn" onclick="clearForm()">Clear Form</button>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="footer-left">Grow Big Ventures — Weekly Client Report</div>
+  <div class="footer-right">Confidential · For Client Use Only</div>
+</div>
+
+<script>
+  function toggleSection(id, btn) {
+    const el = document.getElementById(id);
+    el.classList.toggle('hidden');
+    btn.textContent = el.classList.contains('hidden') ? 'SHOW' : 'HIDE';
+  }
+
+  function addLeadRow() {
+    const tbody = document.getElementById('leadsTable');
+    const row = document.createElement('tr');
+    row.innerHTML = `
+      <td><input type="text" placeholder="Lead name"></td>
+      <td><input type="text" placeholder="Company"></td>
+      <td><select class="icp-select" onchange="styleIcp(this)">
+        <option value="">—</option><option value="A">A</option><option value="B">B</option><option value="C">C</option>
+      </select></td>
+      <td><select style="min-width:140px">
+        <option>Contacted</option><option>Replied</option><option>Meeting Booked</option>
+        <option>In Conversation</option><option>Proposal Sent</option><option>Closed Won</option>
+        <option>Not Interested</option><option>No Response</option>
+      </select></td>
+      <td><input type="text" placeholder="Brief outcome or next step…"></td>
+      <td><button class="delete-btn" onclick="deleteRow(this)">×</button></td>`;
+    tbody.appendChild(row);
+  }
+
+  function deleteRow(btn) { btn.closest('tr').remove(); }
+
+  function styleIcp(sel) {
+    const base = 'width:68px;border-radius:20px;padding:3px 10px;font-size:12px;font-weight:700;text-align:center;font-family:Barlow,sans-serif;border-width:1px;border-style:solid;outline:none;cursor:pointer;-webkit-appearance:none;';
+    const map = {
+      'A': base + 'background:#D4EDE5;color:#1A7A5E;border-color:#9ACEBA;',
+      'B': base + 'background:#FDF3D4;color:#A07820;border-color:#E8D898;',
+      'C': base + 'background:#FAE0DC;color:#A03020;border-color:#E8B8B0;',
+      '':  base + 'background:transparent;color:#6A8F9A;border-color:#D0E3EB;'
+    };
+    sel.style.cssText = map[sel.value] || map[''];
+  }
+
+  function clearForm() {
+    if (!confirm('Clear all fields? This cannot be undone.')) return;
+    document.querySelectorAll('input[type="text"], input[type="number"], textarea').forEach(el => el.value = '');
+    const tbody = document.getElementById('leadsTable');
+    tbody.innerHTML = `<tr>
+      <td><input type="text" placeholder="Jane Smith"></td>
+      <td><input type="text" placeholder="Acme Corp"></td>
+      <td><select class="icp-select" onchange="styleIcp(this)"><option value="">—</option><option value="A">A</option><option value="B">B</option><option value="C">C</option></select></td>
+      <td><select style="min-width:140px"><option>Contacted</option><option>Replied</option><option>Meeting Booked</option><option>In Conversation</option><option>Proposal Sent</option><option>Closed Won</option><option>Not Interested</option><option>No Response</option></select></td>
+      <td><input type="text" placeholder="Brief outcome or next step…"></td>
+      <td><button class="delete-btn" onclick="deleteRow(this)">×</button></td>
+    </tr>`;
+  }
+</script>
+</body>
+</html>
